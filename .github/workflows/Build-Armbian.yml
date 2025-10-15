@@ -80,15 +80,27 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           [[ -n "${AGENT_TOOLSDIRECTORY}" ]] && sudo rm -rf "${AGENT_TOOLSDIRECTORY}"
+          df -hT
+          du -h /usr/share/dotnet
+          du -h /usr/local/lib/android
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android 2>/dev/null
+          df -hT
+          ls -lh /swapfile
+          ls -lh /mnt/swapfile
           sudo swapoff -a
           sudo rm -f /swapfile /mnt/swapfile
+          df -hT
           sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* openjdk* mysql* php* mongodb* dotnet* moby* snapd* android* || true
           sudo -E apt-get -qq autoremove --purge
           sudo -E apt-get -qq clean
           sudo -E apt-get clean
           sudo sed -i '/NVM_DIR/d;/skel/d' /root/{.bashrc,.profile}
+          df -hT
+          du -h ~/.cargo
+          du -h ~/.dotnet
+          du -h ~/.rustup
           sudo rm -rf ~/{.cargo,.dotnet,.rustup}
+          df -hT
           sudo timedatectl set-timezone "${TZ}"
 
       - name: Create simulated physical disk
@@ -114,7 +126,7 @@ jobs:
         working-directory: /mnt/workdir
         run: |
           df -hT ${PWD}
-          git clone -q --single-branch --depth=1 --branch=v24.11 https://github.com/armbian/build.git build
+          git clone -q --single-branch --depth=1 --branch=main https://github.com/armbian/build.git build
           ln -sf /mnt/workdir/build ${GITHUB_WORKSPACE}/build
 
       - name: Apply patches
