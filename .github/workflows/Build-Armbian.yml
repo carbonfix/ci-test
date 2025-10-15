@@ -86,7 +86,6 @@ jobs:
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android 2>/dev/null
           df -hT
           [ -f /swapfile ] && du -h "/swapfile" || echo "Ignore: /swapfile"
-          ls -lh /mnt/swapfile
           [ -f /mnt/swapfile ] && du -h "/mnt/swapfile" || echo "Ignore: /mnt/swapfile"
           sudo swapoff -a
           sudo rm -f /swapfile /mnt/swapfile
